@@ -1,0 +1,12 @@
+---
+title: "model"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Building Models for Spinal Fusion Outcomes
+
+This will be amazing.
