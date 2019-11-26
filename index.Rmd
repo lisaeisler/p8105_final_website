@@ -8,18 +8,13 @@ output:
 <img src="images/cpscoli.jpg" style="width:75%">
 
 ### Authors
-
 This project was completed in December 2019 for P8105: Data Science, by Lisa Eisler MD, Jerri Chen MD PhD, Katherine Dimitripoulou PhD
 
 ### Data Source
-
 This project utilizes data requested from the American College of Surgeons National Surgical Quality Improvement Program Pediatric Database [ACS NSQIP-P](https://www.facs.org/quality-programs/childrens-surgery/pediatric/program-specifics/quality-support-tools/puf).
 
 ### Written Report
-Please find the full written [report](Report.html) here.
-
-### Plots 
-Please find a collection of [plots](dashboard.html) here.
+Please find the full written report [here](https://github.com/lisaeisler/p8105_cpspine/blob/master/report.md).
 
 ### Code
 Find our research group's code for these analyses on [github](https://github.com/lisaeisler/p8105_cpspine.git). 
