@@ -1,5 +1,5 @@
 ---
-title: "model"
+title: "Building Models for Spinal Fusion Outcomes"
 output: html_document
 ---
 
@@ -7,6 +7,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Building Models for Spinal Fusion Outcomes
+## Who gets discharged home after spinal fusion surgery?
 
 This will be amazing.
