@@ -1,5 +1,5 @@
 ---
-title: "Predicting Adverse Outcomes in Pediatric Spinal Fusion"
+title: "Spinal Fusion in Cerebral Palsy: Predicting Adverse Outcomes"
 output: 
   html_document:
     toc: true
@@ -7,7 +7,7 @@ output:
 ---
 <img src="images/cpscoli.jpg" style="width:75%">
 
-### Brief Overview
+### Our project
 
 This project utilizes data requested from the American College of Surgeons National Surgical Quality Improvement Program Pediatric Database [ACS NSQIP-P](https://www.facs.org/quality-programs/childrens-surgery/pediatric/program-specifics/quality-support-tools/puf).
 
