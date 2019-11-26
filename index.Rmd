@@ -1,0 +1,16 @@
+---
+title: "Predicting Adverse Outcomes in Pediatric Spinal Fusion"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+<img src="images/cpscoli.jpg" style="width:75%">
+
+### Brief Overview
+
+This project utilizes data requested from the American College of Surgeons National Surgical Quality Improvement Program Pediatric Database [ACS NSQIP-P](https://www.facs.org/quality-programs/childrens-surgery/pediatric/program-specifics/quality-support-tools/puf).
+
+Please find the full written report here [report](Report.html) and plots [dashboard](dashboard.html) created for my Data Science class.
+
+Find our research group's code for these analyses on [github](https://github.com/lisaeisler/p8105_cpspine.git). If you'd like you can [email](ldl2113@cumc.columbia.edu) us with any questions.
