@@ -8,4 +8,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Variables
-The NSQIP pediatric spine dataset contains 
+The NSQIP pediatric spine dataset contains pre-operative, intra-operative, and post-operative variables for over 800 patients with cerebral palsy undergoing spinal fusion surgery. After data cleaning, we selected variables of interest that could help identify risk factors for post-operative discharge to a location other than home, such as to a rehabilitation facility, or to an acute care or skilled nursing care facility. 
+
+The baseline patient charateristic variables include (but are not limited to): demographic data (age, BMI, race and ethnicity) and medical history (asthma, chronic lung disease, developmental delay, seizures). The intraoperative variables inlcude (but are not limited to): number of spinal levels operated on, operation length of time, bleeding/transfusions. The post-operative outcomes include (but are not limited to) length of stay, death within 30 days, infections, unplanned readmissions, and the outcome we are specifically interested in, location of discharge.
+
+For a full variable list and description, please see the full report. After data cleaning, we had a dataset with 822 observations and 57 variables total.
+
+## Demographic Information
