@@ -13,6 +13,9 @@ library(plotly)
 library(viridis)
 library(patchwork)
 library(kableExtra)
+library(formattable)
+library(data.table)
+library(tableone)
 ```
 
 ```{r, include=FALSE, message=FALSE, warning=FALSE}
@@ -81,9 +84,70 @@ cp_spine_tidy %>%
 cp_spine_tidy %>%
   plot_ly(y = ~age_years, color = ~sex, type = "box") %>% 
   layout(
-    autosize = F, width = 400, height = 250,
     xaxis = list(title = " "),
     yaxis = list(title = "Average Age (Years)"))
 ```
 
 The following plots show the distribution of race and ethnicity in the dataset.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  count(race) %>% 
+  plot_ly(
+    x = ~race, y = ~n, type = "bar"
+    ) %>% 
+  layout(
+    xaxis = list(title = " "),
+    yaxis = list(title = "Number of Patients"))
+
+cp_spine_tidy %>%
+  mutate(ethnicity_hispanic = case_when(
+      ethnicity_hispanic == "No" ~ "Non-Hispanic",
+      ethnicity_hispanic == "Yes" ~ "Hispanic",
+      ethnicity_hispanic == "NULL" ~ "Other/No Answer")) %>% 
+  count(ethnicity_hispanic) %>% 
+  plot_ly(
+    x = ~ethnicity_hispanic, y = ~n, type = "bar"
+    ) %>% 
+  layout(
+    xaxis = list(title = " "),
+    yaxis = list(title = "Number of Patients"))
+```
+
+
+The following table summarizes the frequency of potential pre-operative risk factors in patients' medical histories.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cp_spine_table1 = cp_spine_tidy %>%
+mutate(
+    sex = factor(sex, ordered = TRUE, levels = c("Female", "Male")),
+    race = factor(race, ordered = FALSE, levels = c("American Indian or Alaska Native", "Asian", "Black or African American", "Native Hawaiian or Other Pacific Islander", "Unknown/Not Reported", "White")),
+    admit_from = factor(transt, ordered = TRUE, levels = c("Admitted from home/clinic/doctor's office", "Admitted through ER including outside ER with direct hospital admission", "Chronic care/Rehab/Intermediate Care/Spinal Cord", "Transferred from outside hospital (NICU, PICU, Inpatient on General floor, Adult)", "Other")),
+    ASAstatus = factor(asa_status, ordered = TRUE, levels = c("1", "2", "3", "4", "5")),
+    ventilator_dependence = factor(ventilat, ordered = TRUE, levels = c("No", "Yes")),
+    asthma = factor(asthma, ordered = TRUE, levels = c("No", "Yes")),
+    home_oxygen = factor(oxygen_sup, ordered = TRUE, levels = c("No", "Yes")),
+    cognitive_impairment = factor(impcogstat, ordered = TRUE, levels = c("No", "Yes")),
+    seizure_disorder = factor(seizure, ordered = TRUE, levels = c("No", "Yes")),
+    nutritional_support = factor(nutr_support, ordered = TRUE, levels = c("No", "Yes")),
+    hematologic_disorder = factor(hemodisorder, ordered = TRUE, levels = c("No", "Yes"))
+)
+
+myVars <- c("age_years", "sex", "height", "weight", "ASAstatus", "admit_from", "ventilator_dependence", "asthma", "home_oxygen", "cognitive_impairment", "seizure_disorder", "nutritional_support", "hematologic_disorder")
+catVars <- c("sex", "ASAstatus", "admit_from", "ventilator_dependence", "asthma", "home_oxygen", "cognitive_impairment", "seizure_disorder", "nutritional_support", "hematologic_disorder")
+
+tab3 <- CreateTableOne(vars = myVars, data = cp_spine_table1, factorVars = catVars)
+```
+
+```{r, include=FALSE, message=FALSE, warning=FALSE}
+tab3df = print(tab3)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+tab3df %>% 
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F))
+```
+
+
+
