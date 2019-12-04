@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
-<title>Building Models for Spinal Fusion Outcomes</title>
+<title>Predicting Non-Routine Discharge Following Spinal Fusion in CP Patients</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -234,6 +233,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -303,15 +303,15 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Building Models for Spinal Fusion Outcomes</h1>
+<h1 class="title toc-ignore">Predicting Non-Routine Discharge Following Spinal Fusion in CP Patients</h1>
 
 </div>
 
 
-<div id="who-gets-discharged-home-after-spinal-fusion-surgery" class="section level2">
-<h2>Who gets discharged home after spinal fusion surgery?</h2>
-<p>We conducted a logistic regression analyis. The initial model included 12 predictors. Using literature and exploratory crosstab analysis we reduced the initial model to 3 predictors: age (in years), weight, and pre-existing hematologic disorder. Age and pre-existing hematologic disorder were significant (a=0.01)</p>
-<p>We concluded that for every one year increase in age the odds of being released to a health care facility (not home) increased by (1/.83=1.2) by 20%.If the patient has a pre-existing hematologic disorder the odds of being discharged to a health care facility are (1/.279=3.58) 3.58 the odds of being discharged to home.</p>
+<div id="which-patients-are-at-risk-for-functional-decline-after-fusion-surgery" class="section level2">
+<h2>Which patients are at risk for functional decline after fusion surgery?</h2>
+<p>We conducted a logistic regression analyis. The initial model included 12 predictors deemed clinically important by two anesthesiologists who care for spinal fusion patients as well as a rehabilitation expert. Using literature and exploratory crosstab analysis we reduced the initial model to 3 predictors: age (in years), weight, and pre-existing hematologic disorder. Age and pre-existing hematologic disorder were identified as significant (a=0.01) predictors of non-routine discharge (any outcome that did not involve the patient returning to their prior home, which includes death in the hospital).</p>
+<p>We concluded that for every one year increase in age the odds of non-routine discharge increased by (1/.83=1.2) by 20%.If the patient has a pre-existing hematologic disorder the odds of being discharged to a health care facility are (1/.279=3.58) 3.58 the odds of being discharged to home.</p>
 </div>
 
 

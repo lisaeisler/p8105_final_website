@@ -1,5 +1,5 @@
 ---
-title: "Spinal Fusion in Cerebral Palsy: Predicting Adverse Outcomes"
+title: "Outcomes of Spinal Fusion in Cerebral Palsy: A NSQIP Analysis"
 output: 
   html_document:
     toc: true
@@ -8,9 +8,11 @@ output:
 <img src="images/cpscoli.jpg" style="width:75%">
 
 ### Authors
+
 This project was completed in December 2019 for P8105: Data Science, by Lisa Eisler MD, Jerri Chen MD PhD, Katherine Dimitripoulou PhD
 
 ### Data Source
+
 This project utilizes data requested from the American College of Surgeons National Surgical Quality Improvement Program Pediatric Database [ACS NSQIP-P](https://www.facs.org/quality-programs/childrens-surgery/pediatric/program-specifics/quality-support-tools/puf).
 
 ### Written Report
@@ -20,4 +22,4 @@ Please find the full written report [here](https://github.com/lisaeisler/p8105_c
 Find our research group's code for these analyses on [github](https://github.com/lisaeisler/p8105_cpspine.git). 
 
 ### Contact Us
-If you'd like you can [email](ldl2113@cumc.columbia.edu) us with any questions.
+If you'd like you can [email](mailto:ldl2113@cumc.columbia.edu) us with any questions.
