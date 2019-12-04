@@ -1,5 +1,6 @@
 ---
 title: "Building Models for Spinal Fusion Outcomes"
+Author: "Katherine Dimitropoulou"
 output: html_document
 ---
 
@@ -9,4 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Who gets discharged home after spinal fusion surgery?
 
-This will be amazing.
+Graph of all the predictors here with the main outcome (will be uploaded soon)
+
+We conducted a logistic regression analyis. The initial model included 12 predictors. Using literature and exploratory crosstab analysis we reduced the initial model to 3 predictors: age (in years), weight, and pre-existing hematologic disorder. Age and pre-existing hematologic disorder were significant (a=0.01)
+This is our final model:
+```{r, message=FALSE, warning=FALSE}
+mylogit <- glm(home_discharge1 ~ age_years+ weight+hemodisorder1, data = model_data, family = "binomial")
+summary(mylogit)
+```
+We concluded that for every one year increase in age the odds of being released to a health care facility (not home) increased by (1/.83=1.2) by 20%.If the patient has a  pre-existing hematologic disorder the odds of being discharged to a health care facility are (1/.279=3.58) 3.58 the odds of being discharged to home.
+
