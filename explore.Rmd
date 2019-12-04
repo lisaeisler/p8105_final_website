@@ -114,6 +114,7 @@ cp_spine_tidy %>%
     yaxis = list(title = "Number of Patients"))
 ```
 
+## Medical History
 
 The following table summarizes the frequency of potential pre-operative risk factors in patients' medical histories.
 
@@ -149,5 +150,66 @@ tab3df %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F))
 ```
 
+As expected, the majority of patients had neuromuscular-type scoliosis, which results from medical conditions that impair a child's ability to control the muscles that support the spine such as cerebral palsy.
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  count(ped_spn_class) %>% 
+  replace(is.na(.), 0) %>% 
+  janitor::clean_names() %>% 
+  plot_ly(
+    x = ~ped_spn_class, y = ~n, type = "bar"
+    ) %>% 
+  layout(
+    xaxis = list(title = " "),
+    yaxis = list(title = "Number of Patients"))
+```
 
+## Associations Between Pre- and Intra- Operative Factors and Outcomes
+We wanted to explore whether any individual potential risk factors affected different outcomes. The following plots illustrate some of the relationships we explored.
 
+### Age and Operation Time
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  plot_ly(
+    x = ~age_years, y = ~optime, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
+  layout(
+    xaxis = list(title = "Age (Years)"),
+    yaxis = list(title = "Length of Operation (Minutes)"))
+```
+
+### Operation Time and Bleeding
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  plot_ly(
+    x = ~optime, y = ~bleed_ml_tot, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
+  layout(
+    xaxis = list(title = "Length of Operation (Minutes)"),
+    yaxis = list(title = "Blood Loss (mL)"))
+```
+
+### Bleeding and Length of Stay
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  plot_ly(
+    x = ~bleed_ml_tot, y = ~tothlos, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
+  layout(
+    xaxis = list(title = "Blood Loss (mL)"),
+    yaxis = list(title = "Length of Stay (Days)"))
+```
+
+Because there are so many different variables and potential relationships to explore, we decided to focus on an outcome variable that was clinically of interest to all three team members working on the project. We chose the variable home_discharge, which distinguishes whether or not each patient was able to be discharged to home after surgery, rather than to a care facility such as a rehabilitation center. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+data_discharge = cp_spine_tidy %>%
+  group_by(home_discharge) %>%
+  summarize(n = n()) %>% 
+  pivot_wider(
+    names_from = "home_discharge",
+    values_from = "n"
+  ) %>% 
+  janitor::clean_names()%>% 
+  mutate(percent = (false/(true + false))*100)
+```
+In our dataset, 53 patients (6.45%) had a non-home discharge.
+
+To see our regression analysis on variables that affect home vs. non-home discharge, please see the "Analysis" page or click [here](https://lisaeisler.github.io/p8105_final_website/model.html).
