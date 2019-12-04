@@ -61,7 +61,7 @@ cp_spine_tidy = nsqipspineCP_1617 %>%
 ```
 
 ## Variables
-The NSQIP pediatric spine dataset contains pre-operative, intra-operative, and post-operative variables for over 800 patients with cerebral palsy undergoing spinal fusion surgery. After data cleaning, we selected variables of interest that could help identify risk factors for post-operative discharge to a location other than home, such as to a rehabilitation facility, or to an acute care or skilled nursing care facility. 
+The NSQIP pediatric spine dataset contains pre-operative, intra-operative, and post-operative variables for over 800 patients with cerebral palsy undergoing spinal fusion surgery. After data cleaning, we selected variables of interest that could help identify risk factors for post-operative discharge to a location other than home, such as to a rehabilitation facility, or to an acute care or skilled nursing care facility. This outcome also included patients who expired in the hospital.
 
 The baseline patient charateristic variables include (but are not limited to): demographic data (age, BMI, race and ethnicity) and medical history (asthma, chronic lung disease, developmental delay, seizures). The intraoperative variables inlcude (but are not limited to): number of spinal levels operated on, operation length of time, bleeding/transfusions. The post-operative outcomes include (but are not limited to) length of stay, death within 30 days, infections, unplanned readmissions, and the outcome we are specifically interested in, location of discharge.
 
@@ -150,7 +150,9 @@ tab3df %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F))
 ```
 
-As expected, the majority of patients had neuromuscular-type scoliosis, which results from medical conditions that impair a child's ability to control the muscles that support the spine such as cerebral palsy.
+From this table, we can appreciate that this is not a healthy population. The majority of our patients were American Society of Anesthesiologists (ASA) Physical Status 3-4, indicating that their anesthesiologist felt that they suffered severe systemic disease, with substantive functional limitations. 97% of patients were being cared for at home preoperatively, and 10% were ventilator dependent. 91% were cognitively impaired, with ~50% requiring nutritional support.
+
+From the table below, we see that the majority of patients had neuromuscular-type scoliosis, which results from medical conditions that impair a child's ability to control the muscles that support the spine such as cerebral palsy.
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 cp_spine_tidy %>%
   count(ped_spn_class) %>% 
@@ -197,7 +199,36 @@ cp_spine_tidy %>%
     yaxis = list(title = "Length of Stay (Days)"))
 ```
 
-Because there are so many different variables and potential relationships to explore, we decided to focus on an outcome variable that was clinically of interest to all three team members working on the project. We chose the variable home_discharge, which distinguishes whether or not each patient was able to be discharged to home after surgery, rather than to a care facility such as a rehabilitation center. 
+Next we set out to determine the frequency of adverse outcomes in our data set.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cp_spine_table2 = cp_spine_tidy %>%
+mutate(
+    urinary_tract_infection = factor(urninfec, ordered = TRUE, levels = c("No Complication","Urinary Tract Infection")),
+    wound_infection = factor(wndinfd, ordered = FALSE, levels = c("No Complication", "Deep Incisional SSI")),
+    home_discharge = factor(home_discharge, ordered = TRUE, levels = c("TRUE", "FALSE")),
+    reoperation = factor(reoperation, levels = c("No", "Yes")),
+    death_in_30_days = factor(death30yn, ordered = TRUE, levels = c("No", "Yes"))
+)
+
+myVars <- c("urinary_tract_infection", "wound_infection", "unplanned_readmission", "home_discharge", "reoperation", "death_in_30_days")
+catVars <- c("urinary_tract_infection", "wound_infection", "unplanned_readmission", "home_discharge", "reoperation", "death_in_30_days")
+
+tab4 <- CreateTableOne(vars = myVars, data = cp_spine_table2, factorVars = catVars)
+```
+
+```{r, include=FALSE, message=FALSE, warning=FALSE}
+tab4df = print(tab4)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+tab4df %>% 
+  knitr::kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F))
+```
+
+
+Because there are so many different variables and potential relationships to explore, we decided to focus on an outcome variable that was clinically of interest to all three team members working on the project, and that was fairly common (making it better suited to a prediction model). We chose the variable home_discharge, which distinguishes whether or not each patient was able to be discharged to home after surgery. Non-home discharge, on the other hand, included patients who were discharged to rehabilitation or nursing facilities (and who had not previously resided in one), as well as postoperative death.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 data_discharge = cp_spine_tidy %>%
