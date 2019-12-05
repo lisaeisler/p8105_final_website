@@ -1,5 +1,5 @@
 ---
-title: "Predicting Non-Home Discharge Following Spinal Fusion in Children with Cerebral Palsy"
+title: "Risk Factors for Non-Routine Discharge in Cerebral Palsy Patients Undergoing Spinal Fusion"
 Author: "Katherine Dimitropoulou"
 output: html_document
 ---
@@ -12,9 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In medicine, we aim to do no harm. Non-home discharge may be an indicator not only that a patient's quality of life has not improved, but that they suffered functional decline following surgery requiring a higher level of care. In extreme cases, non-home discharge is due to a postoperative death. It can also indicate temporary or permanent loss of function or decline in health status.  
 
-In order to predict which patients do not go home following surgery, we constructed a maximal model including 12 predictors deemed clinically important by two anesthesiologists who care for spinal fusion patients as well as a rehabilitation expert. Using literature and exploratory crosstab analysis we reduced the initial model to 3 predictors: age (in years), weight, and pre-existing hematologic disorder. 
+In order to predict which patients do not go home following surgery, we constructed a maximal model including 11 predictors deemed clinically important by two anesthesiologists who care for spinal fusion patients as well as a rehabilitation expert. Using literature and exploratory crosstab analysis we reduced the initial model to 6 predictors: age, history of asthma, chronic lung disease, pre-existing hematologic disorder, need for nutritional support, and severity of scoliosis. 
 
-Age and pre-existing hematologic disorder were identified as significant (a=0.01) predictors of non-routine discharge (any outcome that did not involve the patient returning to their prior home, which includes death in the hospital).
+Age and pre-existing hematologic disorder were identified as significant (alpha = 0.05) predictors of non-routine discharge (any outcome that did not involve the patient returning to their prior home, which includes death in the hospital).
 
-We concluded that for every one year increase in age the odds of non-routine discharge increased by (1/.83=1.2) by 20%.If the patient has a  pre-existing hematologic disorder the odds of being discharged to a health care facility are (1/.279=3.58) 3.58 the odds of being discharged to home.
+We concluded that for every one year increase in age the odds of non-routine discharge increased by by 22%. If the patient has a pre-existing hematologic disorder, the odds of being discharged to a health care facility are 3.7 the odds of being discharged to home. Surprisingly, we did not see a significant impact of any of the comorbities or the severity of the scoliosis on the primary outcome.
 
