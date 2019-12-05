@@ -23,9 +23,7 @@ We propose that patient selection for these procedures is crucial, given the ris
 This project utilizes data requested from the American College of Surgeons National Surgical Quality Improvement Program Pediatric Database [ACS NSQIP-P](https://www.facs.org/quality-programs/childrens-surgery/pediatric/program-specifics/quality-support-tools/puf).
 
 ### Screencast
-For a brief overview of our work on this project, please view our screencast.
-<iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
-        style="overflow:hidden;" src="https://www.screencast.com/users/kad2534/folders/Default/media/89756420-3369-48d2-b335-d60741082988/embed" height="800" width="1280" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+For a brief overview of our work on this project, please view our screencast [here](https://www.screencast.com/t/n9zWPiZPLp3).
 
 ### Written Report
 Please find the full written report [here](https://lisaeisler.github.io/p8105_final_website/report.html).
