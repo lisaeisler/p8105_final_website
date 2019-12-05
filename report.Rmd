@@ -536,7 +536,7 @@ logLik(mylogit)
 Two predictors in the model came up significant at a=.05.
 1. For every 1 year increase in age the log odds of homedischarge (versus discharge to other healthcare facilities) decreases by 0.19.
 2. Having a pre-existing hematologic disorder decreases the log odds of being discharged to home by 1.29.
-Surprisingly, we have not seen a significant impact of any of the comorbities or the severity of the scoliosis on the primary outcome. 
+Surprisingly, we did not see a significant impact of any of the comorbities or the severity of the scoliosis on the primary outcome. 
 
 Confidence intervals for the log odds coeficients (log-likelihood function)
 ```{r, message=FALSE, warning=FALSE}
@@ -555,7 +555,7 @@ exp(cbind(OR = coef(mylogit), confint(mylogit)))
 For every year increase in age the odds of being released to a health care facility (not home) increase by 22% (1/.82=1.22) (all other variables remain constant).
 The odds of being discharged at home if you have a pre-existing hematological disorder are 0.28. This means that if the patient with CP has a pre-existing hematologic disorder the odds of being discharged to a health care facility are 3.7 (1/.27=3.7) the odds of being discharged to home (all other variables remain constant). 
 
-### Other co-morbidity variables
+### Other Co-Morbidity Variables
 Important pre-operative indicators that have been identified for other patients who undergo spinal fusion surgery, such as asthma, chronic lung disease, need for nutritional support and severity of the scoliosis do not appear to have a direct impact on the outcome for individuals with CP. When we exponantiate the betas for asthma, chronic lung disease, need for nutritional support and severity of the scoliosis, we observe the following odds ratios: 
 For patients with CP who have asthma the odds to develop complications and to be released to a health care facility (not home) increase by 44% (1/.82=1.44). 
 For patients with CP who have nutritional support the odds to develop complications and to be released to a health care facility (not home) increase by 36% (1/.72=1.36).
