@@ -8,11 +8,9 @@ output:
 <img src="images/cpscoli.jpg" style="width:75%">
 
 ### Authors
-
 This project was completed in December 2019 for P8105: Data Science, by Lisa Eisler MD, Jerri Chen MD PhD, Katherine Dimitripoulou PhD
 
 ### Introduction
-
 Scoliosis is a curvature of the spine which impairs physical function and posture, contributes to pain, and in extreme cases stresses vital organs.
 
 Patients with scoliosis may require surgical correction in a procedure called spinal fusion. The goal of this procedure is to use special instruments to join the vertebral bones so that the spine cannot bend, and to correct deformity. 
@@ -22,8 +20,11 @@ Scoliosis often occurs in children with cerebral palsy. At the time of surgery, 
 We propose that patient selection for these procedures is crucial, given the risks of this highly invasive surgery in an already medically complex population. Therefore, we aim to develop a multiple regression model demonstrating preoperative characteristics associated with adverse 30-day outcomes (particularly discharge to a higher level of care), in hopes of identifying those in whom the risks do not outweight the benefits.
 
 ### Data Source
-
 This project utilizes data requested from the American College of Surgeons National Surgical Quality Improvement Program Pediatric Database [ACS NSQIP-P](https://www.facs.org/quality-programs/childrens-surgery/pediatric/program-specifics/quality-support-tools/puf).
+
+### Screencast
+For a brief overview of our work on this project, please view our screencast.
+
 
 ### Written Report
 Please find the full written report [here](https://lisaeisler.github.io/p8105_final_website/report.html).
