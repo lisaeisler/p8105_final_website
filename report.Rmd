@@ -552,11 +552,12 @@ exp(cbind(OR = coef(mylogit), confint(mylogit)))
 ```
 
 ## Odds Ratios Interpretation
-For every year increase in age the odds of being released to a health care facility (not home) increase by 22% (1/.82=1.22) (all other variables remain constant).
-The odds of being discharged at home if you have a pre-existing hematological disorder are 0.28. This means that if the patient with CP has a pre-existing hematologic disorder the odds of being discharged to a health care facility are 3.7 (1/.27=3.7) the odds of being discharged to home (all other variables remain constant). 
+We conclude that for every 1 unit (years) increase in age, the log odds of being discharged home decreased by 0.196 (holding constant other variables in the model). Therefore, the odds of home discharge as patients age by 1 year are 0.82x the odds, telling us that every advancing year decreases the odds of discharge to home by 18%.
+
+Similarly, if a CP patient has a preoperative diagnosis of hematological disease, the odds of being able to return home after a spinal fusion are 0.28x the odds of returning home if a patient does not have this preoperative diagnosis, holding constant all other variables in the model.
 
 ### Other Co-Morbidity Variables
-Important pre-operative indicators that have been identified for other patients who undergo spinal fusion surgery, such as asthma, chronic lung disease, need for nutritional support and severity of the scoliosis do not appear to have a direct impact on the outcome for individuals with CP. When we exponantiate the betas for asthma, chronic lung disease, need for nutritional support and severity of the scoliosis, we observe the following odds ratios: 
+Important pre-operative indicators that have been identified for other patients who undergo spinal fusion surgery, such as asthma, chronic lung disease, need for nutritional support and severity of the scoliosis do not appear to have a direct impact on the outcome for individuals with CP. When we exponentiate the betas for asthma, chronic lung disease, need for nutritional support and severity of the scoliosis, we observe the following odds ratios: 
 For patients with CP who have asthma the odds to develop complications and to be released to a health care facility (not home) increase by 44% (1/.82=1.44). 
 For patients with CP who have nutritional support the odds to develop complications and to be released to a health care facility (not home) increase by 36% (1/.72=1.36).
 For patients with CP who have severe scoliosis (level_13) the odds to develop complications and to be released to a health care facility (not home) increase by 13% (1/.88=1.36).
