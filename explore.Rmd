@@ -63,7 +63,6 @@ cp_spine_tidy = nsqipspineCP_1617 %>%
 * <a href="#var">Variables</a>
 * <a href="#dem">Demographic Information</a>
 * <a href="#medhx">Medical History</a>
-* <a href="#assoc">Associations Between Peri-Operative Factors and Outcomes</a>
 * <a href="#outcomes">Frequency of Adverse Outcomes</a>
 
 <h1 id="var">Variables</h1>
@@ -172,40 +171,6 @@ cp_spine_tidy %>%
   layout(
     xaxis = list(title = " "),
     yaxis = list(title = "Number of Patients"))
-```
-
-<h1 id="assoc">Associations Between Peri-Operative Factors and Outcomes</h1>
-
-We wanted to explore whether any individual potential risk factors affected different outcomes. The following plots illustrate some of the relationships we explored.
-
-### Age and Operation Time
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-cp_spine_tidy %>%
-  plot_ly(
-    x = ~age_years, y = ~optime, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
-  layout(
-    xaxis = list(title = "Age (Years)"),
-    yaxis = list(title = "Length of Operation (Minutes)"))
-```
-
-### Operation Time and Bleeding
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-cp_spine_tidy %>%
-  plot_ly(
-    x = ~optime, y = ~bleed_ml_tot, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
-  layout(
-    xaxis = list(title = "Length of Operation (Minutes)"),
-    yaxis = list(title = "Blood Loss (mL)"))
-```
-
-### Bleeding and Length of Stay
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-cp_spine_tidy %>%
-  plot_ly(
-    x = ~bleed_ml_tot, y = ~tothlos, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
-  layout(
-    xaxis = list(title = "Blood Loss (mL)"),
-    yaxis = list(title = "Length of Stay (Days)"))
 ```
 
 <h1 id="outcomes">Frequency of Adverse Outcomes</h1>
