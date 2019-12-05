@@ -557,13 +557,13 @@ We conclude that for every 1 unit (years) increase in age, the log odds of being
 Similarly, if a CP patient has a preoperative diagnosis of hematological disease, the odds of being able to return home after a spinal fusion are 0.28x the odds of returning home if a patient does not have this preoperative diagnosis, holding constant all other variables in the model.
 
 ### Other Co-Morbidity Variables
-Important pre-operative indicators that have been identified for other patients who undergo spinal fusion surgery, such as asthma, chronic lung disease, need for nutritional support and severity of the scoliosis do not appear to have a direct impact on the outcome for individuals with CP. When we exponentiate the betas for asthma, chronic lung disease, need for nutritional support and severity of the scoliosis, we observe the following odds ratios: 
-For patients with CP who have asthma the odds to develop complications and to be released to a health care facility (not home) increase by 44% (1/.82=1.44). 
-For patients with CP who have nutritional support the odds to develop complications and to be released to a health care facility (not home) increase by 36% (1/.72=1.36).
-For patients with CP who have severe scoliosis (level_13) the odds to develop complications and to be released to a health care facility (not home) increase by 13% (1/.88=1.36).
-For patients with CP having chronic lung disease appears to be protective against going to a health care facility.
+Important pre-operative indicators that have been identified for other patients who undergo spinal fusion surgery, such as asthma, chronic lung disease, need for nutritional support and severity of the scoliosis do not appear to have a significant impact on the outcome for individuals with CP in our model and population. When we exponentiate the betas for asthma, chronic lung disease, need for nutritional support and severity of the scoliosis, we observe the following odds ratios: 
+For patients with CP who have asthma, the odds to be discharged to home decrease by 28% (compared to those without asthma). 
+For patients with CP who have nutritional support the odds to be discharged to home decrease by 27% (compared to those without need for nutritional support)
+For patients with CP who have severe scoliosis requiring 13 or more vertebral levels to be fused, the odds to be discharged to home decrease by 12%.
+Surprisingly, having chronic lung disease appears to be protective towards home discharge.
 
-Although these commorbidity variables are not significant, the OR is not close to 1 which may indicate that with a larger sample size these variables could be significant. 
+Although the 95% confidence intervals for these comorbidity variables span 1, the values themselves are not close to 1. This may indicate that with a larger sample size such predictors could have a significant impact on the outcome of home discharge.
 
 <h1 id="discuss">Discussion</h1>
 Further studies are needed to expand on the results of our work for this population. Future studies can incorporate a larger number of patients with CP from future yearly releases of the NSQIP data. Studies should aim to create a prediction model for non-home discharges validated for this  population within and outside of the NSQIP database. They should further utilize the prediction model to create a risk score that aids clinical decision making.

@@ -16,5 +16,4 @@ In order to predict which patients do not go home following surgery, we construc
 
 Age and pre-existing hematologic disorder were identified as significant (alpha = 0.05) predictors of non-routine discharge (any outcome that did not involve the patient returning to their prior home, which includes death in the hospital).
 
-We concluded that for every one year increase in age the odds of non-routine discharge increased by by 22%. If the patient has a pre-existing hematologic disorder, the odds of being discharged to a health care facility are 3.7 the odds of being discharged to home. Surprisingly, we did not see a significant impact of any of the comorbities or the severity of the scoliosis on the primary outcome.
-
+We conclude that every advancing year of age decreases the odds of discharge to home by 18%. Similarly, a preoperative diagnosis of hematological disease decreases the odds of discharge to home by 73%. Other factors such as preoperative diagnosis of asthma, chronic lung disease, or need for nutritional supplementation may be predictive of non-home discharge, however larger studies are needed to confirm the magnitude of these effects.
