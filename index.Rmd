@@ -8,7 +8,7 @@ output:
 <img src="images/cpscoli.jpg" style="width:75%">
 
 ### Authors
-This project was completed in December 2019 for P8105: Data Science, by Lisa Eisler MD, Jerri Chen MD PhD, Katherine Dimitripoulou PhD
+This project was completed in December 2019 for P8105: Data Science, by Lisa Eisler MD, Jerri Chen MD PhD, Katherine Dimitropoulou PhD
 
 ### Introduction
 Scoliosis is a curvature of the spine which impairs physical function and posture, contributes to pain, and in extreme cases stresses vital organs.
