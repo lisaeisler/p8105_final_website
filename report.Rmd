@@ -1,8 +1,309 @@
----
-title: "Report"
----
-##Introduction
 
-Sometimes you need to say a bit about the site -- how it was made, where it's hosted, where the source code can be found. 
+---
+title: "Predicting Non-Routine Discharge in Cerebral Palsy Patients Undergoing Spinal Fusion"
+output: html_document
+---
 
-If this is for a project or analysis, I recommend giving some details about the R package versions that you used to create the content.
+![Wheelchair](./images/wheelchair.jpg)
+
+# Table of Contents
+
+* <a href="#intro">Introduction</a>
+* <a href="#characterize">Data Characterization</a>
+* <a href="#tidying">Tidying The Data</a>
+* <a href="#explore">Data Exploration</a>
+* <a href="#model">Modeling Discharge Status</a>
+* <a href="#discuss">Discussion</a>
+* <a href="#refs">References</a>
+
+---
+
+### Authors
+
+* Katherine Dimitripoulou PhD (UNI: kd2524)
+* Jerri Chen MD, PhD (UNI: jc4166)
+* Lisa Eisler MD (UNI: ldl2113)
+
+<h1 id="intro">Introduction</h1>
+
+## Project Motivation and Literature Review
+
+Children with cerebral palsy (CP) often present with a curvature of the spine, or scoliosis, as a result of abnormal muscle tone and postural weakness.<sup>[1](https://www.flintrehab.com/2019/cerebral-palsy-scoliosis/)</sup> The clinical characteristics of scoliosis in CP patients involve a deformity of the lumbar and thoracic spine often accompanied by pelvic torque and postural problems, which leads to loss of function and pain. Severe spinal curves (>50 degrees) are difficult to control with braces, especially if they are rapidly growing. Surgical treatment is often the recommended intervention to prevent further deterioration of functional mobility, and improve quality of life.
+
+The surgical treatment of individuals with CP who present with severe neuromuscular scoliosis has been associated with peri- and postoperative complication rates as high as 75%. Mohamad et al. (2007) carried out a retrospective record review of 175 patients with neuromuscular scoliosis, with 73.7 % of them being patients with CP.<sup>[2](https://www.ncbi.nlm.nih.gov/pubmed/17513958/)</sup> The peri- and post-operative complications rate was 33.1 % (58/175). Patients experienced a combination of pulmonary complications (~20%), infections (8%), neurological (4%), and cardiovascular problems (4%). In another retrospective study, Tsirikos et al. (2008) reported data in 287 patients with CP who underwent spinal fusion.<sup>[3](https://www.ncbi.nlm.nih.gov/pubmed/18449049/)</sup> They reported major complications including 3 perioperative deaths, an intraoperative complication rate of 10.8 % (38/287), an early postoperative (within 6 weeks) complication rate of 9.4 % (27/287), and a late postoperative complication rate of 10.1 % (29/ 287). Lastly, a prospective cohort study with 127 patients with CP (Samdani, et.al. 2016) reported an overall 39.4% of  major perioperative complications that resulted in increased hospitalization length, use of intensive care unit, and readmission. The authors reported perioperative risk variables such as increase of blood loss, staged procedures and the lack of antifibrinolytic use.<sup>[4](https://www.ncbi.nlm.nih.gov/pubmed/26148567/)</sup> They also reported some pre-operative indicators such as the larger preoperative kyphosis, lower body mass index (BMI) as risk factors for complications.
+
+In all studies, there appear to be pre- and/or peri-operative risk factors associated with increased complications, but no study has comprehensively examined these factors. In addition, no study has examined non-routine discharge, with discharge to home (or home facility) assumed to be the routine as well as preferred outcome from a rehabilitation standpoint. We believe that patients and their families benefit from reasonable expectations about the chance of a decline in function, higher-level care needs or even death in the initial 30-day postoperative period. A model predicting non-routine discharge (defined as discharge to a higher level of care including postoperative death) may aid in patient selection and family decision making. We consider the outcome of non-home discharge in particular to be an indicator that spinal fusion surgery has failed to improve quality of life or funcitonal status, at least in the short term and perhaps permanently.
+
+Our team comprises anesthesiologists and rehabilitation therapists who often care for patients with CP. We can combine expertise to develop behavioral and biological intervention protocols, and to make decisions regarding the proper timing and optimization for surgery. 
+
+
+<h1 id="characterize">Data Characterization</h1>
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(haven)
+library(plotly)
+library(viridis)
+library(data.table)
+library(formattable)
+library(readxl)
+library(patchwork)
+library(data.table)
+library(tableone)
+
+# Formatting plot output
+knitr::opts_chunk$set(
+  out.width = "90%"
+  )
+# Set the plot design
+theme_set(theme_classic() + 
+            theme(legend.position = "bottom", 
+                  legend.key.size = unit(1.5, "line"),
+                  plot.title = element_text(hjust = 0.5)))
+# Raw data
+nsqipspineCP_1617 = read_csv("./data/nsqipspineCP_1617.csv")
+```
+
+In its raw form, the data has `r nrow(nsqipspineCP_1617)` rows and `r ncol(nsqipspineCP_1617)` columns. Each row corresponds to a single spinal fusion and 384 demographic, medical, surgical, and pre/intra/postoperative characteristics and events, which required a massive amount of chart review by a clinical reviewer.
+
+A copy of the data could not be shared due to licensing agreements.
+
+This is a focused analysis, interested only in a handful of important postoperative outcomes as they relate to the recovery of CP patients undergoing spinal fusion. These variables are defined here:
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+variables = read_excel("data/CPSpineVariables.xlsx")
+
+variables[is.na(variables)] <- ""
+
+formattable(variables, 
+            align = c("l","l","l"), 
+            list(`Data Category` = formatter(
+              "span", 
+              style = ~ style(color = "grey",font.weight = "bold"))))
+
+```
+
+Therefore we will tidy the data to that end.
+
+<h1 id="tidying">Tidying the Data</h1>
+
+## Data Reduction & Cleaning
+
+To start the cleaning, we replaced the value "-99" with NA to indicate non-zero missingness. We converted age in days to age in years and height and weight to the metric system. We then created a BMI estimate based on height and weight. American Society of Anesthesiologists Physical Status Classification (ASA Class) was converted from a character variable to a factor variable. Extent of surgical fusion (inflection point 13 levels) was used to create a dichotomous variable, level_13. A dichotomous variable indicating whether the patient returned home or was discharged to a facility was created and null values deleted. A subset of the data was selected for analysis.
+
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy = nsqipspineCP_1617 %>%
+  mutate_if(is.numeric, ~replace(., . == -99, NA)) %>%
+  mutate(
+    age_years = age_days/365.25,
+    height = height*2.54,
+    weight = weight/2.2) %>%
+  mutate(
+    bmi = weight/((height/100)*(height/100)),
+    asa_status = case_when(
+      asaclas == "ASA 1 - No Disturb" ~ "1",
+      asaclas == "ASA 2 - Mild Disturb" ~ "2",
+      asaclas == "ASA 3 - Severe Disturb" ~ "3",
+      asaclas == "ASA 4 - Life Threat" ~ "4",
+      asaclas == "None assigned" ~ "NA"),
+    home_discharge = case_when(
+      dischdest == "Expired" ~ "FALSE",
+      dischdest == "Facility Which was Home" ~ "TRUE",
+      dischdest == "Home" ~ "TRUE",
+      dischdest == "Rehab" ~ "FALSE",
+      dischdest == "Separate Acute Care" ~ "FALSE",
+      dischdest == "Skilled Care, Not Home" ~ "FALSE",
+      dischdest == "Unknown" ~ "NA",
+      dischdest == "Unskilled Facility Not Home" ~ "FALSE",
+      dischdest == "NULL" ~ "NA"),
+    level_13 = case_when(
+      prncptx == "ARTHRODESIS, ANTERIOR, FOR SPINAL DEFORMITY, WITH OR WITHOUT CAST; 2 TO 3 VERTEBRAL SEGMENTS" ~ "FALSE",
+      prncptx == "ARTHRODESIS, ANTERIOR, FOR SPINAL DEFORMITY, WITH OR WITHOUT CAST; 4 TO 7 VERTEBRAL SEGMENTS" ~ "FALSE",
+      prncptx == "ARTHRODESIS, ANTERIOR, FOR SPINAL DEFORMITY, WITH OR WITHOUT CAST; 8 OR MORE VERTEBRAL SEGMENTS" ~ "FALSE",
+      prncptx == "ARTHRODESIS, POSTERIOR, FOR SPINAL DEFORMITY, WITH OR WITHOUT CAST; UP TO 6 VERTEBRAL SEGMENTS" ~ "FALSE",
+      prncptx == "ARTHRODESIS, POSTERIOR, FOR SPINAL DEFORMITY, WITH OR WITHOUT CAST; 7 TO 12 VERTEBRAL SEGMENTS" ~ "FALSE",
+      prncptx == "ARTHRODESIS, POSTERIOR, FOR SPINAL DEFORMITY, WITH OR WITHOUT CAST; 13 OR MORE VERTEBRAL SEGMENTS" ~ "TRUE")) %>%
+  filter(home_discharge != "NA") %>% 
+  select(pufyear_x:ped_spn_post_neurodeftype, age_years, sex, height, weight, bmi, ethnicity_hispanic, race, asa_status, transt, ventilat, asthma, hxcld, oxygen_sup, crf, impcogstat, seizure, nutr_support, hemodisorder, level_13, optime, tothlos, d_opto_dis, death30yn, supinfec, wndinfd, orgspcssi, dehis, oupneumo, pulembol, renainsf, urninfec, cszre, neurodef, cdarrest, othbleed, bleed_ml_tot, othcdiff, othsysep, unplannedreadmission1, reoperation, dischdest, home_discharge)
+```
+
+After data cleaning, we had a dataset with 822 observations and 57 variables total.
+
+
+<h1 id="explore">Data Exploration</h1>
+
+## Descriptive Analyses
+
+To give a sense of the overall demographic and medical characteristics of our cohort, continuous and categorical variables considered to be predictors or covariates impacting adverse outcomes are included in the following table, as mean(SD) or n(%).
+
+```{r, message=FALSE, warning=FALSE}
+cp_spine_table1 = cp_spine_tidy %>%
+mutate(
+    sex = factor(sex, ordered = TRUE, levels = c("Female", "Male")),
+    race = factor(race, ordered = FALSE, levels = c("American Indian or Alaska Native", "Asian", "Black or African American", "Native Hawaiian or Other Pacific Islander", "Unknown/Not Reported", "White")),
+    admit_from = factor(transt, ordered = TRUE, levels = c("Admitted from home/clinic/doctor's office", "Admitted through ER including outside ER with direct hospital admission", "Chronic care/Rehab/Intermediate Care/Spinal Cord", "Transferred from outside hospital (NICU, PICU, Inpatient on General floor, Adult)", "Other")),
+    ASAstatus = factor(asa_status, ordered = TRUE, levels = c("1", "2", "3", "4", "5")),
+    ventilator_dependence = factor(ventilat, ordered = TRUE, levels = c("No", "Yes")),
+    asthma = factor(asthma, ordered = TRUE, levels = c("No", "Yes")),
+    home_oxygen = factor(oxygen_sup, ordered = TRUE, levels = c("No", "Yes")),
+    cognitive_impairment = factor(impcogstat, ordered = TRUE, levels = c("No", "Yes")),
+    seizure_disorder = factor(seizure, ordered = TRUE, levels = c("No", "Yes")),
+    nutritional_support = factor(nutr_support, ordered = TRUE, levels = c("No", "Yes")),
+    hematologic_disorder = factor(hemodisorder, ordered = TRUE, levels = c("No", "Yes"))
+)
+myVars <- c("age_years", "sex", "height", "weight", "ASAstatus", "admit_from", "ventilator_dependence", "asthma", "home_oxygen", "cognitive_impairment", "seizure_disorder", "nutritional_support", "hematologic_disorder")
+catVars <- c("sex", "ASAstatus", "admit_from", "ventilator_dependence", "asthma", "home_oxygen", "cognitive_impairment", "seizure_disorder", "nutritional_support", "hematologic_disorder")
+tab3 <- CreateTableOne(vars = myVars, data = cp_spine_table1, factorVars = catVars)
+```
+
+```{r, message=FALSE, warning=FALSE}
+tab3df = print(tab3)
+```
+
+
+From this table, we can appreciate that this is not a healthy population. The majority of our patients were American Society of Anesthesiologists (ASA) Physical Status 3-4, indicating that their anesthesiologist felt that they suffered severe systemic disease, with substantive functional limitations. 97% of patients were being cared for at home preoperatively, and 10% were ventilator dependent. 91% were cognitively impaired, with ~50% requiring nutritional support.
+
+Next, to give a sense of the frequency of adverse events in our overall cohort, categorical outcome variables are included in the following table, as n(%).
+
+```{r, message=FALSE, warning=FALSE}
+cp_spine_table2 = cp_spine_tidy %>%
+mutate(
+    urinary_tract_infection = factor(urninfec, ordered = TRUE, levels = c("No Complication","Urinary Tract Infection")),
+    wound_infection = factor(wndinfd, ordered = FALSE, levels = c("No Complication", "Deep Incisional SSI")),
+    home_discharge = factor(home_discharge, ordered = TRUE, levels = c("TRUE", "FALSE")),
+    reoperation = factor(reoperation, levels = c("No", "Yes")),
+    death_in_30_days = factor(death30yn, ordered = TRUE, levels = c("No", "Yes"))
+)
+myVars <- c("urinary_tract_infection", "wound_infection", "home_discharge", "reoperation", "death_in_30_days")
+catVars <- c("urinary_tract_infection", "wound_infection", "home_discharge", "reoperation", "death_in_30_days")
+tab4 <- CreateTableOne(vars = myVars, data = cp_spine_table2, factorVars = catVars)
+```
+
+```{r, message=FALSE, warning=FALSE}
+tab4df = print(tab4)
+```
+
+The most common major adverse outcome was non-home discharge, impacting 6.4% (n=53) of patients. Given the frequency of non-home discharge and our clinical interests in preventing adverse peri-operative outcomes and in rehabilitation of children with CP, we decided to focus our analysis on this outcome. 
+
+The following plot shows similar numbers of male and female patients who had home vs. non-home discharge.
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  group_by(home_discharge) %>% 
+  count(sex) %>% 
+  plot_ly(
+    x = ~home_discharge, y = ~n, color = ~sex, type = "bar"
+    ) %>% 
+  layout(
+    xaxis = list(title = "Home Discharge"),
+    yaxis = list(title = "Number of Patients"))
+```
+
+The distribution of ages for patients with non-home discharge trends higher than patients with home discharge.
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  plot_ly(y = ~age_years, color = ~home_discharge, type = "box",
+          colors = "Set2") %>% 
+  layout(
+    xaxis = list(title = "Home Discharge"),
+    yaxis = list(title = "Age (Years)"))
+```
+
+The following plots show the percent of patients with non-home discharge, stratified by race or ethnicity.
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  group_by(home_discharge) %>% 
+  count(race) %>% 
+  pivot_wider(
+    names_from = "home_discharge",
+    values_from = "n"
+  ) %>% 
+  janitor::clean_names() %>% 
+  mutate(percent_nothome = (false/(true + false))*100) %>% 
+  replace(is.na(.), 0) %>% 
+  plot_ly(
+    x = ~race, y = ~percent_nothome, type = "bar"
+    ) %>% 
+  layout(
+    xaxis = list(title = "Race"),
+    yaxis = list(title = "Percent Non-Home Discharge"))
+```
+
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  group_by(home_discharge) %>% 
+  count(ethnicity_hispanic) %>% 
+  rename(ethnicity = ethnicity_hispanic) %>% 
+  mutate(ethnicity = case_when(
+    ethnicity == "No" ~ "Non-Hispanic",
+    ethnicity == "Yes" ~ "Hispanic",
+    ethnicity == "NULL" ~ "Other/Did Not Answer"
+  )) %>% 
+    pivot_wider(
+    names_from = "home_discharge",
+    values_from = "n"
+  ) %>% 
+  janitor::clean_names() %>% 
+  mutate(percent_nothome = (false/(true + false))*100) %>% 
+  replace(is.na(.), 0) %>% 
+  plot_ly(
+    x = ~ethnicity, y = ~percent_nothome, type = "bar"
+    ) %>% 
+  layout(
+    xaxis = list(title = "Ethnicity"),
+    yaxis = list(title = "Percent Non-Home Discharge"))
+```
+Because of the large "Other/Did Not Answer" group, it is difficult to interpret the contribution of ethnicity as a risk factor for non-home discharge.
+
+While we focused on the home discharge outcome, during exploratory analysis, we did attempt to see if there were any other interesting relationships between potential risk factors and outcomes. For example:
+
+### Age and Operation Time
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  plot_ly(
+    x = ~age_years, y = ~optime, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
+  layout(
+    xaxis = list(title = "Age (Years)"),
+    yaxis = list(title = "Length of Operation (Minutes)"))
+```
+
+### Operation Time and Bleeding
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  plot_ly(
+    x = ~optime, y = ~bleed_ml_tot, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
+  layout(
+    xaxis = list(title = "Length of Operation (Minutes)"),
+    yaxis = list(title = "Blood Loss (mL)"))
+```
+
+### Bleeding and Length of Stay
+```{r, message=FALSE, warning=FALSE}
+cp_spine_tidy %>%
+  plot_ly(
+    x = ~bleed_ml_tot, y = ~tothlos, type = "scatter", mode = "markers", alpha = 0.5)  %>% 
+  layout(
+    xaxis = list(title = "Blood Loss (mL)"),
+    yaxis = list(title = "Length of Stay (Days)"))
+```
+
+There were no clear relationships between single predictors and outcomes, which lead us to attempt to build a model that incorporates multiple predictors for our outcome of interest.
+
+<h1 id="model">Modeling Discharge Status</h1>
+
+## Full Model
+
+
+## Reduced Model
+
+
+## Comparison of Residuals, Goodness of Fit
+
+
+
+<h1 id="discuss">Discussion</h1>
+
+## Major Findings
+
+## Future Directions
+
+<h1 id="refs">Referenes</h1>
