@@ -1,5 +1,5 @@
 ---
-title: "Outcomes of Spinal Fusion in Cerebral Palsy: A NSQIP Analysis"
+title: "Risk Factors for Non-Routine Discharge in Cerebral Palsy Patients Undergoing Spinal Fusion"
 output: 
   html_document:
     toc: true
@@ -26,7 +26,7 @@ We propose that patient selection for these procedures is crucial, given the ris
 This project utilizes data requested from the American College of Surgeons National Surgical Quality Improvement Program Pediatric Database [ACS NSQIP-P](https://www.facs.org/quality-programs/childrens-surgery/pediatric/program-specifics/quality-support-tools/puf).
 
 ### Written Report
-Please find the full written report [here](https://github.com/lisaeisler/p8105_cpspine/blob/master/report.md).
+Please find the full written report [here](https://lisaeisler.github.io/p8105_final_website/report.html).
 
 ### Code
 Find our research group's code for these analyses on [github](https://github.com/lisaeisler/p8105_cpspine.git). 

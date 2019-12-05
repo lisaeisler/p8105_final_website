@@ -1,6 +1,6 @@
 
 ---
-title: "Predicting Non-Routine Discharge in Cerebral Palsy Patients Undergoing Spinal Fusion"
+title: "Risk Factors for Non-Routine Discharge in Cerebral Palsy Patients Undergoing Spinal Fusion"
 output: html_document
 ---
 
