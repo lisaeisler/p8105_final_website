@@ -25,7 +25,6 @@ This project utilizes data requested from the American College of Surgeons Natio
 ### Screencast
 For a brief overview of our work on this project, please view our screencast.
 
-
 ### Written Report
 Please find the full written report [here](https://lisaeisler.github.io/p8105_final_website/report.html).
 
